@@ -18,7 +18,7 @@ spec:
           value: "8080"
         - name: MESSAGE
           value: Hello, World!
-        image: docker.io/gkemhcs/kargo-sample-demo:main-cb994ff
+        image: docker.io/gkemhcs/kargo-sample-demo:main-e41adb8
         name: app
         ports:
         - containerPort: 8080
