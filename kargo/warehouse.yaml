@@ -6,4 +6,5 @@ metadata:
 spec:
   subscriptions:
   - image: 
-      repoUrl: docker.io/gkemhcs/kargo-sample-demo
+      repoURL: docker.io/gkemhcs/kargo-sample-demo
+      imageSelectionStrategy: NewestBuild
