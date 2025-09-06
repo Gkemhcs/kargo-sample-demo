@@ -8,8 +8,7 @@ port=int(os.getenv("PORT",default="8080"))
 def home():
     return jsonify({
         "message":message,
-        "description":"serving from version1🎉"
-GOBIN=$(pwd)/ GO111MODULE=on go install sigs.k8s.io/kustomize/kustomize/v5@latest    })
+        "description":"serving from version1🎉"})
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=port, debug=True)
