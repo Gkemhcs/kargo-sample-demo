@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kargo-demo-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kargo-demo-app
+  template:
+    metadata:
+      labels:
+        app: kargo-demo-app
+    spec:
+      containers:
+      - env:
+        - name: PORT
+          value: "8080"
+        - name: MESSAGE
+          value: Hello, World!
+        image: docker.io/gkemhcs/kargo-sample-demo:main-cb994ff
+        name: app
+        ports:
+        - containerPort: 8080
