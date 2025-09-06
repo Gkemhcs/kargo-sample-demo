@@ -8,3 +8,10 @@ spec:
   - stageSelector:
       name: dev
     autoPromotionEnabled: true
+  - stageSelector:
+      name: test
+    autoPromotionEnabled: true
+  - stageSelector:
+      name: production
+    autoPromotionEnabled: true
+  

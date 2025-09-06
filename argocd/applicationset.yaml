@@ -8,8 +8,9 @@ spec:
   - list:
       elements:
       - stage: test
-      - stage: uat
-      - stage: prod
+      - stage: dev 
+      - stage: staging 
+      - stage: production 
   template:
     metadata:
       name: kargo-demo-{{stage}}
