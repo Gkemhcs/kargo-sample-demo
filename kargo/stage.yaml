@@ -49,7 +49,6 @@ spec:
       name: kargo-sample-warehouse
     sources:
       stages:
-      - dev 
       - test
   promotionTemplate:
     spec:
@@ -70,8 +69,6 @@ spec:
       name: kargo-sample-warehouse
     sources:
       stages:
-      - dev 
-      - test 
       - staging  
   promotionTemplate:
     spec:
