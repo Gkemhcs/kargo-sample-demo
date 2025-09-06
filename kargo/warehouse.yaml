@@ -1,0 +1,9 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Warehouse
+metadata:
+  name: kargo-sample-warehouse
+  namespace: kargo-sample-project
+spec:
+  subscriptions:
+  - image: 
+      repoUrl: docker.io/gkemhcs/kargo-sample-demo

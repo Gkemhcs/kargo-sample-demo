@@ -1,0 +1,50 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: PromotionTask
+metadata:
+  name: kargo-sample-promotion-process
+  namespace: kargo-sample-project 
+spec:
+  vars:
+  - name: gitopsRepo
+    value: https://github.com/Gkemhcs/kargo-sample-demo.git
+  - name: imageRepo
+    value: docker.io/gkemhcs/kargo-sample-demo
+  steps:
+  - uses: git-clone
+    config:
+      repoURL: \${{ vars.gitopsRepo }}
+      checkout:
+      - branch: main
+        path: ./src
+      - branch: stage/\${{ ctx.stage }}
+        create: true
+        path: ./out
+  - uses: git-clear
+    config:
+      path: ./out
+  - uses: kustomize-set-image
+    as: update
+    config:
+      path: ./src/
+      images:
+      - image: \${{ vars.imageRepo }}
+        tag: \${{ imageFrom(vars.imageRepo).Tag }}
+  - uses: kustomize-build
+    config:
+      path: ./src
+      outPath: ./out
+  - uses: git-commit
+    as: commit
+    config:
+      path: ./out
+      message: \${{ task.outputs.update.commitMessage }}
+  - uses: git-push
+    config:
+      path: ./out
+  - uses: argocd-update
+    config:
+      apps:
+      - name: kargo-demo-\${{ ctx.stage }}
+        sources:
+        - repoURL: \${{ vars.gitopsRepo }}
+          desiredRevision: \${{ task.outputs.commit.commit }}

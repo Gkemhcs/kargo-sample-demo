@@ -1,0 +1,41 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: kargo-demo
+  namespace: argocd
+spec:
+  generators:
+  - list:
+      elements:
+      - stage: test
+      - stage: uat
+      - stage: prod
+  template:
+    metadata:
+      name: kargo-demo-{{stage}}
+      namespace: argocd
+      annotations:
+        kargo.akuity.io/authorized-stage: kargo-sample-project:{{stage}}
+      labels:
+        app: kargo-demo
+        environment: '{{stage}}'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/gkemhcs/kargo-sample-demo
+        targetRevision: stage/{{stage}}
+        path: .
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: kargo-demo-{{stage}}
+      syncPolicy:
+        syncOptions:
+        - CreateNamespace=true
+        - PrunePropagationPolicy=foreground
+        - PruneLast=true
+        retry:
+          limit: 5
+          backoff:
+            duration: 5s
+            factor: 2
+            maxDuration: 3m

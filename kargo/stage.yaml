@@ -1,0 +1,81 @@
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: dev
+  namespace: kargo-sample-project 
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: kargo-sample-warehouse
+    sources:
+      direct: true
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: kargo-sample-promotion-process
+        as: promo-process
+--- 
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: test  
+  namespace: kargo-sample-project 
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: kargo-sample-warehouse
+    sources:
+      stages:
+      - dev 
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: kargo-sample-promotion-process
+        as: promo-process
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: staging 
+  namespace: kargo-sample-project 
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: kargo-sample-warehouse
+    sources:
+      stages:
+      - dev 
+      - test
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: kargo-sample-promotion-process
+        as: promo-process
+---
+apiVersion: kargo.akuity.io/v1alpha1
+kind: Stage
+metadata:
+  name: production 
+  namespace: kargo-sample-project 
+spec:
+  requestedFreight:
+  - origin:
+      kind: Warehouse
+      name: kargo-sample-warehouse
+    sources:
+      stages:
+      - dev 
+      - test 
+      - staging  
+  promotionTemplate:
+    spec:
+      steps:
+      - task:
+          name: kargo-sample-promotion-process
+        as: promo-process
